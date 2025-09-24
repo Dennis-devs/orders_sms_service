@@ -16,15 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from Orders_mgmt.views import OrderViewSet, CustomerViewSet
-
-router = DefaultRouter()
-router.register(r'customers', CustomerViewSet)
-router.register(r'orders', OrderViewSet)
+from Orders_mgmt.views import index
 
 urlpatterns = [
-    path('', include(router.urls)),
     path('admin/', admin.site.urls),
-    path('orders/', include('Orders_mgmt.urls')),
+    path('api/', include('Orders_mgmt.urls')),
+    path('', index, name='index'),
+    path('oidc/', include('mozilla_django_oidc.urls')),
+
 ]
