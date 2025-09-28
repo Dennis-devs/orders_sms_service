@@ -31,6 +31,13 @@
 * Planned to test SMS delivery using Postman and verify in the Africa's Talking sandbox dashboard or simulator.
 * Noted potential sandbox issues due to reported SMS service degradation; prepared to mock SMS for testing if needed.
 
+## Day 4: Testing and CI/CD
+- **Unit Tests**: Wrote tests for models, serializers, and viewsets using `pytest-django`. Mocked SMS for reliability. Achieved a % coverage (see `htmlcov/index.html`).
+- **CI**: Set up GitHub Actions (`.github/workflows/ci.yml`) to run tests on push/pull requests to `main`. Configured secrets for Auth0 and Africa's Talking.
+- **Testing Instructions**:
+  1. Push code to GitHub `main` branch.
+  2. Check GitHub Actions for test results and coverage.
+
 ## Setup Instructions
 1. Clone the repository and navigate to the project directory.
 1. Install dependencies from requirements.txt.
