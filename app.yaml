@@ -1,0 +1,30 @@
+runtime: python
+env: flex
+entrypoint: gunicorn -b :$PORT sms_service.wsgi:application
+
+runtime_config:
+  python_version: 3.8
+
+env_variables:
+  DJANGO_ENV: "production"
+  DJANGO_SECRET_KEY: os.getenv('SECRET_KEY', 'SEC') 
+  AFRICASTALKING_USERNAME: "sandbox"
+  AFRICASTALKING_API_KEY: os.getenv('AFRICASTALKING_API_KEY')
+  OIDC_CLIENT_ID: os.getenv('OIDC_RP_CLIENT_ID')
+  OIDC_CLIENT_SECRET: os.getenv('OIDC_RP_CLIENT_SECRET')
+  OIDC_AUTH_ENDPOINT: "https://dev-qlfgtecl6j1fbku7.us.auth0.com/authorize"
+  OIDC_TOKEN_ENDPOINT: "https://dev-qlfgtecl6j1fbku7.us.auth0.com/token"
+  OIDC_USER_ENDPOINT: "https://dev-qlfgtecl6j1fbku7.us.auth0.com/userinfo"
+  OIDC_JWKS_ENDPOINT: "https://dev-qlfgtecl6j1fbku7.us.auth0.com/.well-known/jwks.json"
+
+handlers:
+- url: /static
+  static_dir: staticfiles
+- url: /.*
+  script: auto
+  secure: always
+
+automatic_scaling:
+  min_num_instances: 1
+  max_num_instances: 2
+  target_cpu_utilization: 0.65
