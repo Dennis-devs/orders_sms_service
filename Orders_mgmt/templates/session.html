@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <a href="/profile">User Profile</a>
+    <br><br>
+    <!-- <a href="{% url 'oidc_logout' %}">Logout</a> -->
+    <form method="post" action="{% url 'oidc_logout' %}">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
+    <h3>Welcome, {{ user.username }}! - {{ user.email }}</h3>
+    <p>You are logged in.</p>
+    <p>Access <a href="/api/customers/">Customers API</a> or <a href="/api/orders/">Orders API</a></p>
+
+{% endblock %}

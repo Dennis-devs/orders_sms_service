@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+import os
+
+# Load environment variables
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,7 +44,42 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Orders_mgmt',
     'rest_framework',
+    'mozilla_django_oidc',
 ]
+AUTHENTICATION_BACKENDS = (
+    'mozilla_django_oidc.auth.OIDCAuthenticationBackend',
+    # 'django.contrib.auth.backends.ModelBackend',
+)
+
+
+OIDC_AUTH0_DOMAIN = os.getenv('OIDC _AUTH0_DOMAIN')
+OIDC_RP_CLIENT_ID = os.getenv('OIDC_RP_CLIENT_ID')
+OIDC_RP_CLIENT_SECRET = os.getenv('OIDC_RP_CLIENT_SECRET')
+OIDC_OP_AUTHORIZATION_ENDPOINT = 'https://dev-qlfgtecl6j1fbku7.us.auth0.com/authorize'
+OIDC_OP_TOKEN_ENDPOINT = 'https://dev-qlfgtecl6j1fbku7.us.auth0.com/oauth/token'
+OIDC_OP_USER_ENDPOINT = 'https://dev-qlfgtecl6j1fbku7.us.auth0.com/userinfo'
+OIDC_RP_SIGN_ALGO = 'RS256'
+OIDC_OP_JWKS_ENDPOINT = 'https://dev-qlfgtecl6j1fbku7.us.auth0.com/.well-known/jwks.json'
+OIDC_REDIRECT_URL = 'http://localhost:8000/oidc/callback/'
+OIDC_OP_LOGOUT_URL = 'dev-qlfgtecl6j1fbku7.us.auth0.com/v2/logout/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = '/oidc/authenticate/'
+
+AFRICASTALKING_USERNAME = 'sandbox'
+AFRICASTALKING_API_KEY = os.getenv('AFRICASTALKING_API_KEY')
+MESSAGING_URL = os.getenv('AFRICASTALKING_MESSAGING_URL')
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'mozilla_django_oidc.contrib.drf.OIDCAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -49,7 +89,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'mozilla_django_oidc.middleware.SessionRefresh',
 ]
+
 
 ROOT_URLCONF = 'Python_service.urls'
 
@@ -122,3 +164,20 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'mozilla_django_oidc': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}
