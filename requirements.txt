@@ -5,15 +5,20 @@ cffi==2.0.0
 charset-normalizer==3.4.3
 coverage==7.10.7
 cryptography==46.0.1
+dj-database-url==3.0.1
 Django==5.2.6
+django-heroku==0.3.1
 djangorestframework==3.16.1
 dotenv==0.9.9
+gunicorn==23.0.0
 idna==3.10
 iniconfig==2.1.0
 josepy==2.1.0
 mozilla-django-oidc==4.0.1
 packaging==25.0
 pluggy==1.6.0
+psycopg2==2.9.10
+psycopg2-binary==2.9.10
 pycparser==2.23
 Pygments==2.19.2
 pytest==8.4.2
@@ -27,3 +32,4 @@ responses==0.25.8
 schema==0.7.7
 sqlparse==0.5.3
 urllib3==2.5.0
+whitenoise==6.11.0
