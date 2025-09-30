@@ -4,7 +4,46 @@
 
 ## Project Overview
 * Purpose: Build a REST API to manage customers and orders, with Auth0 for user authentication and Africa's Talking for sending SMS notifications when orders are created.
-* Tech Stack: Django, Django REST Framework, SQLite, Auth0 with mozilla-django-oidc, Africa's Talking Python SDK, Postman(API testing tool).
+* Tech Stack
+  - Backend Framework & Core
+    - Djngo 4.2+ - Web framework
+    - Django REST Framework 3.14+ - API framework for building REST APIs
+    - Python 3.8+ - Programming language
+  - Database Layer
+    - SQLite (development/testing, built into Django)
+    - PostgreSQL (for production) with psycopg2-binary
+  - API Integration & Communication
+    - Africa's Talking SMS API - SMS gateway service
+    - Requests library - HTTP client for API calls
+    - REST API endpoints - Communication protocol
+  - Development Tools
+    - python-decouple - Environment variables management
+    - django-cors-headers - Cross-origin resource sharing
+    - drf-spectacular - API documentation (OpenAPI/Swagger)
+    - django-debug-toolbar - Development debugging
+  - Testing & Quality
+    - pytest - Testing framework
+    - pytest-django - Django-specific testing tools
+    - Postman - API testing tool
+  - Production & Deployment
+    - Gunicorn - WSGI HTTP server
+    - Apache/Nginx - Web server
+  - Architecture Pattern
+    - REST API Architecture - Resource-oriented URLs, HTTP methods, JSON responses
+    - MVC Pattern - Models, Views, Serializers separation
+    - Client-Server Architecture - Stateless communication
+  - External Services
+    - Africa's Talking Sandbox - Testing environment
+    - Africa's Talking Production API - Live SMS service
+    - Simulator - Message testing platform
+  - Data Flow
+    - Frontend/Client → Django REST API → Database
+    - Django API → Africa's Talking SMS API → Customer's Phone
+    - Webhook callbacks → Django API (for delivery reports)
+  - Development Environment
+    - Virtual Environment (venv/virtualenv)
+    - Git - Version control
+    - IDE/Editor (VS Code)
 
 ## Feat 1: Project Setup
 * Initialized Django project and app.
@@ -31,7 +70,7 @@
 * Planned to test SMS delivery using Postman and verify in the Africa's Talking sandbox dashboard or simulator.
 * Noted potential sandbox issues due to reported SMS service degradation; prepared to mock SMS for testing if needed.
 
-## Day 4: Testing and CI/CD
+## Feat 4: Testing and CI/CD
 - **Unit Tests**: Wrote tests for models, serializers, and viewsets using `pytest-django`. Mocked SMS for reliability. Achieved a % coverage (see `htmlcov/index.html`).
 - **CI**: Set up GitHub Actions (`.github/workflows/ci.yml`) to run tests on push/pull requests to `main`. Configured secrets for Auth0 and Africa's Talking.
 - **Testing Instructions**:
@@ -48,6 +87,7 @@
 1. Configure Africa's Talking: register a test phone number in the sandbox.
 
 ## Testing Instructions
+- (for customer and order creation and Africas talking sms)
 1. Use Postman to get a fresh Auth0 token via OAuth 2.0.
 1. Create a customer via the API with a name, unique code, and registered phone number.
 1. Create an order via the API, linking to the customer.

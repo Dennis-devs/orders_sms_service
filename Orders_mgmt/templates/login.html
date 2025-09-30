@@ -1,8 +1,15 @@
 {% extends "base.html" %}
+{% load static %}
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="/static/login.css">
+{% endblock %}
+{% block title %}Login Page{% endblock title %}
 
 {% block content %}
 
-<a href="/oidc/authenticate/">Login</a>
-<h3>Home page.</h3>
+<nav><a href="/oidc/authenticate/">Login</a></nav>
+<h2>Home page.</h2>
+<p>Login to view your profile</p>
 
-{% endblock %}
+{% endblock content%}
