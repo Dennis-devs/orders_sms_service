@@ -61,7 +61,7 @@ class OrderViewSet(viewsets.ModelViewSet):
    
 def index(request):
     if request.user.is_authenticated:
-        return render(request, 'session.html', {'user': request.user})
+        return render(request, 'dashboard.html', {'user': request.user})
     else:
         return render(request, 'login.html')
 

@@ -1,9 +1,16 @@
 {% extends "base.html" %}
-
+{% load static %}
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="/static/dashboard.css">
+{% endblock %}
+{% block title %}Dash Page{% endblock title %}
 {% block content %}
 
-    <a href="/profile">User Profile</a>
-    <br><br>
+    <nav>
+        <a href="/profile">User Profile</a>
+        <br><br>
+    </nav>
     <!-- <a href="{% url 'oidc_logout' %}">Logout</a> -->
     <form method="post" action="{% url 'oidc_logout' %}">
         {% csrf_token %}

@@ -1,5 +1,5 @@
 
-"URL config for Python_service project."
+# URL config for Python_service project.
 
 from django.contrib import admin
 from django.urls import path, include
