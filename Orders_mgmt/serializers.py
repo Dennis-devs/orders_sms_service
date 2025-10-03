@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Customer, Order
+from orders_mgmt.models import Customer, Order
 
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:

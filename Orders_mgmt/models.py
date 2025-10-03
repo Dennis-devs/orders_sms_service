@@ -10,7 +10,7 @@ class Customer(models.Model):
         return f"{self.name} - {self.code} - {self.phone}"
     
 class Order(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    customer = models.ForeignKey('orders_mgmt.Customer', on_delete=models.CASCADE)
     item = models.CharField(max_length=100)
     quantity = models.DecimalField(max_digits=10, decimal_places=2)
     time = models.DateTimeField(auto_now_add=True)
