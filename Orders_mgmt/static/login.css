@@ -15,11 +15,11 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: #131cc3;
   text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+  color: #040975;
 }
 
 nav {
@@ -89,7 +89,7 @@ button:focus-visible {
     background-color: #d95d5d;
   }
   a:hover {
-    color: #747bff;
+    color: #131ccb;
   }
   button {
     background-color: #f9f9f9;

@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 # from .views import SendConfirmationSMSView
-from .views import OrderViewSet, CustomerViewSet
+from orders_mgmt.views import OrderViewSet, CustomerViewSet
 
 
 router = DefaultRouter()

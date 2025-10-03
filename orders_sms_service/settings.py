@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Orders_mgmt',
+    'orders_mgmt',
     'rest_framework',
     'mozilla_django_oidc',
 ]
@@ -93,7 +93,7 @@ MIDDLEWARE = [
 ]
 
 
-ROOT_URLCONF = 'Python_service.urls'
+ROOT_URLCONF = 'orders_sms_service.urls'
 
 TEMPLATES = [
     {
@@ -110,7 +110,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'Python_service.wsgi.application'
+WSGI_APPLICATION = 'orders_sms_service.wsgi.application'
 
 
 # Database

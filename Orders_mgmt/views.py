@@ -3,8 +3,8 @@ from rest_framework import viewsets
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .models import Customer, Order
-from .serializers import CustomerSerializer, OrderSerializer
+from orders_mgmt.models import Customer, Order
+from orders_mgmt.serializers import CustomerSerializer, OrderSerializer
 import africastalking as africastalking
 import os
 import requests
