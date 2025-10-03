@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
                 ('Item', models.CharField(max_length=100)),
                 ('quantity', models.DecimalField(decimal_places=2, max_digits=10)),
                 ('time', models.DateTimeField(auto_now_add=True)),
-                ('customer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='Orders_mgmt.customers')),
+                ('customer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='orders_mgmt.customers')),
             ],
         ),
     ]
