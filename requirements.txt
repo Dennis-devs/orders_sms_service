@@ -1,4 +1,6 @@
 africastalking==2.0
+ansible==12.0.0
+ansible-core==2.19.2
 asgiref==3.9.1
 certifi==2025.8.3
 cffi==2.0.0
@@ -13,7 +15,9 @@ dotenv==0.9.9
 gunicorn==23.0.0
 idna==3.10
 iniconfig==2.1.0
+Jinja2==3.1.6
 josepy==2.1.0
+MarkupSafe==3.0.3
 mozilla-django-oidc==4.0.1
 packaging==25.0
 pluggy==1.6.0
@@ -29,6 +33,7 @@ python-dotenv==1.1.1
 PyYAML==6.0.2
 requests==2.32.5
 requests-mock==1.12.1
+resolvelib==1.2.0
 responses==0.25.8
 schema==0.7.7
 sqlparse==0.5.3
