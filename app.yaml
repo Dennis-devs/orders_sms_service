@@ -1,0 +1,21 @@
+runtime: python
+env: flex
+entrypoint: gunicorn -b :$PORT sms_service.wsgi:application # Run gunicorn on GAE’s $PORT
+
+runtime_config:
+  python_version: 3.13.7
+
+# env vars are in GitHub secrets for security
+
+# Handlers serve static files via whitenoise and ensures HTTPS.
+handlers:
+- url: /static
+  static_dir: staticfiles
+- url: /.*
+  script: auto
+  secure: always
+
+automatic_scaling:
+  min_num_instances: 1
+  max_num_instances: 2
+  target_cpu_utilization: 0.65
