@@ -15,18 +15,18 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: '3.13.7'
-    - name: Install dependencies
+    - name: Install Ansible
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    - name: Run migrations (for test DB)
-      run: python manage.py makemigrations && python manage.py migrate
+        pip install Ansible
+    - name: Run Ansible playbook to set up environment
+      run: ansible-playbook ansible/setup.yml
     - name: Run tests with coverage
       run: |
         pytest --cov=core --cov-report=term-missing --cov-fail-under=80
       env:
         DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-        AFRICASTALKING_USERNAME: sandbox  # Use sandbox for tests
+        AFRICASTALKING_USERNAME: sandbox
         AFRICASTALKING_API_KEY: ${{ secrets.AFRICASTALKING_API_KEY }}
         OIDC_CLIENT_ID: test-id  # Mock for tests
         OIDC_CLIENT_SECRET: test-secret
@@ -45,7 +45,7 @@ jobs:
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v2
     - name: Deploy to App Engine
-      run: gcloud app deploy app.yaml --quiet --project your-project-id
+      run: gcloud app deploy app.yaml --quiet --project sms-service-474413
       env:
         DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
         AFRICASTALKING_USERNAME: ${{ secrets.AFRICASTALKING_USERNAME }}
@@ -58,4 +58,4 @@ jobs:
         OIDC_JWKS_ENDPOINT: ${{ secrets.OIDC_JWKS_ENDPOINT }}
         DATABASE_URL: ${{ secrets.DATABASE_URL }}  # Cloud SQL string
     - name: Run migrations on GAE
-      run: gcloud app instances ssh --project your-project-id --service default --version $(gcloud app versions list --project your-project-id --format='value(version.id)' --sort-by=~deployed | head -n 1) -- python manage.py migrate
+      run: gcloud app instances ssh --project sms-service-474413 --service default --version $(gcloud app versions list --project sms-service-474413 --format='value(version.id)' --sort-by=~deployed | head -n 1) -- python manage.py migrate
