@@ -11,20 +11,20 @@
     - Python 3.8+ - Programming language
   - Database Layer
     - SQLite (development/testing, built into Django)
-    - PostgreSQL (for production) with psycopg2-binary
+    - **PostgreSQL** (for production) with psycopg2-binary
   - API Integration & Communication
-    - Africa's Talking SMS API - SMS gateway service
+    - **Africa's Talking SMS API** - SMS gateway service
     - Requests library - HTTP client for API calls
-    - REST API endpoints - Communication protocol
+    - **REST API endpoints** - Communication protocol
   - Development Tools
-    - python-decouple - Environment variables management
-    - django-cors-headers - Cross-origin resource sharing
-    - drf-spectacular - API documentation (OpenAPI/Swagger)
-    - django-debug-toolbar - Development debugging
+    - mozilla-django-oidc with Auth0 for OpenID Connect (OIDC)
   - Testing & Quality
-    - pytest - Testing framework
+    - **pytest** - Testing framework
     - pytest-django - Django-specific testing tools
     - Postman - API testing tool
+  - Configuration management
+    - **Ansible** used for dependency installation and migrations
+
   - Production & Deployment
     - Gunicorn - WSGI HTTP server
     - Apache/Nginx - Web server
@@ -79,6 +79,12 @@
 - **Testing Instructions**:
   1. Push code to GitHub `main` branch.
   2. Check GitHub Actions for test results and coverage.
+
+## Container Runtime 
+- **Tool**: Colima (macOS Monterey 12.7.6, alternative to Docker Desktop)
+- **Setup**: `brew install colima docker`, then `colima start --cpu 2 --memory 4`.
+- **Usage**: Runs Docker-compatible containers for development and GAE deployment.
+- **Troubleshooting**: Resolved QEMU errors via `brew install qemu` or `colima delete`.
 
 ## Setup Instructions
 1. Clone the repository and navigate to the project directory.

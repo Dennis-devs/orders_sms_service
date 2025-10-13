@@ -25,16 +25,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-# SEC = os.getenv('SEC')
 SECRET_KEY =os.getenv('SECRET_KEY', 'SEC' )
 DEBUG = os.getenv('DJANGO_ENV', 'development') == 'development'
 ALLOWED_HOSTS = [
-    'your-project-id-.ew.r.appspot.com',
+    'sms-service-474413.ew.r.appspot.com',
     'localhost',
-    '123.0.0.1'
+    '127.0.0.1'
 ]
 
+# Production Security
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
     SECURE_HSTS_SECONDS = 31536000
@@ -135,20 +134,40 @@ WSGI_APPLICATION = 'orders_sms_service.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES2 = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'),
-        conn_max_age=600,
-        ssl_require=not DEBUG
-    )
-}
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+# DATABASES = {
+#         'default': dj_database_url.config(
+#             default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'),
+#             conn_max_age=600,
+#             ssl_require=not DEBUG
+#         )
+#     }
+
+# Check if running on Google Cloud App Engine
+if os.getenv("GAE_APPLICATION", None):
+    # Configure database connection for production
+    DATABASES = {
+        'default': dj_database_url.parse(
+            f"postgresql://{os.getenv('DB_USER')}:{os.getenv('DB_PASS')}@//cloudsql/{os.getenv('INSTANCE_CONNECTION_NAME')}/{os.getenv('DB_NAME')}",
+            conn_max_age=600,
+            ssl_require=False  # App Engine handles SSL
+        )
+    }
+else:
+    DATABASES = {
+        'default': dj_database_url.config(
+            default='sqlite:////app/db.sqlite3',
+            conn_max_age=600
+        )
+    }
 
 LOGGING = {
     'version': 1,
@@ -156,9 +175,6 @@ LOGGING = {
     'handlers': {'console': {'class': 'logging.StreamHandler'}},
     'loggers': {'': {'handlers': ['console'], 'level': 'INFO'}},
 }
-
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
