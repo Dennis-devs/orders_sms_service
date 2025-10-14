@@ -70,14 +70,15 @@
 * Planned to test SMS delivery using Postman and verify in the Africa's Talking sandbox dashboard or simulator.
 * Noted potential sandbox issues due to reported SMS service degradation; prepared to mock SMS for testing if needed.
 
-## Feat 4: Testing and CI/CD
+## Feat 4: Testing and CI/CD pipeline
 - **Unit Tests**: Tests cover Customer/Order models, serializers, views (GET, POST, DELETE), and SMS integration. 
 - Achieved a 80.28% coverage using `pytest-django` and `pytest-cov`.
 - Mocked SMS for reliability.  (see `htmlcov/index.html`).
 - Run: `pytest --cov=core --cov-report=html`.
-- **CI**: Set up GitHub Actions (`.github/workflows/ci.yml`) to run tests on push/pull requests to `main`. Configured secrets for Auth0 and Africa's Talking.
+- **Triggers**: Set up GitHub Actions (`.github/workflows/ci-cd.yml`) to run `ci-tests` on PRs tp `main` and `dev` (tests, Ansible). Configured secrets for Auth0 and Africa's Talking.
+- Runs `ci-test` and `cd-deploy` on pushes to `main` (GAE deployment)
 - **Testing Instructions**:
-  1. Push code to GitHub `main` branch.
+  1. Push code to GitHub `dev` branch or `main` branch.
   2. Check GitHub Actions for test results and coverage.
 
 ## Container Runtime 

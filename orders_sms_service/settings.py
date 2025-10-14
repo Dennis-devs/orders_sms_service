@@ -165,7 +165,7 @@ else:
     DATABASES = {
         'default': dj_database_url.config(
             default='sqlite:////app/db.sqlite3',
-            conn_max_age=600
+            conn_max_age=600,
         )
     }
 
