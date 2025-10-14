@@ -44,7 +44,7 @@ if not DEBUG:
     SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
