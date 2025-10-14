@@ -11,20 +11,20 @@
     - Python 3.8+ - Programming language
   - Database Layer
     - SQLite (development/testing, built into Django)
-    - PostgreSQL (for production) with psycopg2-binary
+    - **PostgreSQL** (for production) with psycopg2-binary
   - API Integration & Communication
-    - Africa's Talking SMS API - SMS gateway service
+    - **Africa's Talking SMS API** - SMS gateway service
     - Requests library - HTTP client for API calls
-    - REST API endpoints - Communication protocol
+    - **REST API endpoints** - Communication protocol
   - Development Tools
-    - python-decouple - Environment variables management
-    - django-cors-headers - Cross-origin resource sharing
-    - drf-spectacular - API documentation (OpenAPI/Swagger)
-    - django-debug-toolbar - Development debugging
+    - mozilla-django-oidc with Auth0 for OpenID Connect (OIDC)
   - Testing & Quality
-    - pytest - Testing framework
+    - **pytest** - Testing framework
     - pytest-django - Django-specific testing tools
     - Postman - API testing tool
+  - Configuration management
+    - **Ansible** used for dependency installation and migrations
+
   - Production & Deployment
     - Gunicorn - WSGI HTTP server
     - Apache/Nginx - Web server
@@ -70,15 +70,22 @@
 * Planned to test SMS delivery using Postman and verify in the Africa's Talking sandbox dashboard or simulator.
 * Noted potential sandbox issues due to reported SMS service degradation; prepared to mock SMS for testing if needed.
 
-## Feat 4: Testing and CI/CD
+## Feat 4: Testing and CI/CD pipeline
 - **Unit Tests**: Tests cover Customer/Order models, serializers, views (GET, POST, DELETE), and SMS integration. 
 - Achieved a 80.28% coverage using `pytest-django` and `pytest-cov`.
 - Mocked SMS for reliability.  (see `htmlcov/index.html`).
 - Run: `pytest --cov=core --cov-report=html`.
-- **CI**: Set up GitHub Actions (`.github/workflows/ci.yml`) to run tests on push/pull requests to `main`. Configured secrets for Auth0 and Africa's Talking.
+- **Triggers**: Set up GitHub Actions (`.github/workflows/ci-cd.yml`) to run `ci-tests` on PRs tp `main` and `dev` (tests, Ansible). Configured secrets for Auth0 and Africa's Talking.
+- Runs `ci-test` and `cd-deploy` on pushes to `main` (GAE deployment)
 - **Testing Instructions**:
-  1. Push code to GitHub `main` branch.
+  1. Push code to GitHub `dev` branch or `main` branch.
   2. Check GitHub Actions for test results and coverage.
+
+## Container Runtime 
+- **Tool**: Colima (macOS Monterey 12.7.6, alternative to Docker Desktop)
+- **Setup**: `brew install colima docker`, then `colima start --cpu 2 --memory 4`.
+- **Usage**: Runs Docker-compatible containers for development and GAE deployment.
+- **Troubleshooting**: Resolved QEMU errors via `brew install qemu` or `colima delete`.
 
 ## Setup Instructions
 1. Clone the repository and navigate to the project directory.
