@@ -16,7 +16,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the app
 COPY . .
-
+RUN chmod -R 777 /app
 # Run migrations and collect static files (optional, can be in entrypoint)
 RUN python manage.py makemigrations && python manage.py migrate
 RUN python manage.py collectstatic --noinput
