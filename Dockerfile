@@ -14,6 +14,9 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+ENV DJANGO_SECRET_KEY=os.getenv('SECRET_KEY')
+ENV DATABASE_URL="sqlite:////app/db.sqlite3"
+
 # Copy the rest of the app
 COPY . .
 RUN chmod -R 777 /app
