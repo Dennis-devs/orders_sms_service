@@ -19,8 +19,13 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install ansible
+    - name: Create Ansible Inventory File
+      run: |
+        mkdir -p ansible/inventory
+        echo '[test_hosts]' > ansible/inventory/hosts
+        echo 'localhost ansible_connection=local' >> ansible/inventory/hosts      
     - name: Run Ansible playbook to set up environment
-      run: ansible-playbook ansible/setup.yml
+      run: ansible-playbook ansible/setup.yml -i ansible/inventory/hosts
     - name: Run tests with coverage
       run: |
         pytest --cov=core --cov-report=term-missing --cov-fail-under=80

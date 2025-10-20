@@ -1,5 +1,5 @@
 - name: Setup Django SMS Service Environment
-  hosts: localhost
+  hosts: test_hosts
   connection: local
   tasks:
     - name: Install Python and pip
