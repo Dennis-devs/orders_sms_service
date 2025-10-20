@@ -21,6 +21,7 @@ jobs:
         source venv/bin/activate
         python -m pip install --upgrade pip
         pip install ansible
+        pip install -r requirements.txt
     - name: Create Ansible Inventory File
       run: |
         mkdir -p ansible/inventory
@@ -29,7 +30,7 @@ jobs:
     - name: Run Ansible playbook to set up environment
       run: |
         source venv/bin/activate 
-        ansible-playbook ansible/setup.yml -i ansible/inventory/hosts
+        ansible-playbook ansible/setup.yml -i ansible/inventory/hosts, --connection=local --extra-vars "ansible_python_interpreter=$(pwd)/venv/bin/python"
     - name: Run tests with coverage
       run: |
         pytest --cov=core --cov-report=term-missing --cov-fail-under=80
