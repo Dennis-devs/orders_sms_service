@@ -57,5 +57,13 @@ jobs:
         OIDC_USER_ENDPOINT: ${{ secrets.OIDC_USER_ENDPOINT }}
         OIDC_JWKS_ENDPOINT: ${{ secrets.OIDC_JWKS_ENDPOINT }}
         DATABASE_URL: ${{ secrets.DATABASE_URL }}  # Cloud SQL string
+        ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
+        APP_ENGINE_HOST_VERSION: ${{ secrets.APP_ENGINE_HOST_VERSION }}
+        CONNECTION_STRING: ${{ secrets.CONNECTION_STRING }}
+        INSTANCE_CONNECTION_NAME: ${{ secrets.INSTANCE_CONNECTION_NAME }}
+        DB_USER: ${{ secrets.DB_USER }}
+        DB_NAME: ${{ secrets.DB_NAME }}
+        DB_PASS: ${{ secrets.DB_PASS }}
+        GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
     - name: Run migrations on GAE
       run: gcloud app instances ssh --project sms-service-474413 --service default --version $(gcloud app versions list --project sms-service-474413 --format='value(version.id)' --sort-by=~deployed | head -n 1) -- python manage.py migrate
