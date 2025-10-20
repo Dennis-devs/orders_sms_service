@@ -34,6 +34,7 @@ jobs:
     - name: Run tests with coverage
       run: |
         source venv/bin/activate
+        export PYTHONPATH="$GITHUB_WORKSPACE"
         python -m pytest --cov=core --cov-report=term-missing --cov-fail-under=80
       env:
         DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
