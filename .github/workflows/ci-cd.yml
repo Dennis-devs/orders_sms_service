@@ -17,6 +17,8 @@ jobs:
         python-version: '3.13.7'
     - name: Install Ansible
       run: |
+        python -m venv venv
+        source venv/bin/activate
         python -m pip install --upgrade pip
         pip install ansible
     - name: Create Ansible Inventory File
@@ -25,7 +27,9 @@ jobs:
         echo '[test_hosts]' > ansible/inventory/hosts
         echo 'localhost ansible_connection=local' >> ansible/inventory/hosts      
     - name: Run Ansible playbook to set up environment
-      run: ansible-playbook ansible/setup.yml -i ansible/inventory/hosts
+      run: |
+        source venv/bin/activate 
+        ansible-playbook ansible/setup.yml -i ansible/inventory/hosts
     - name: Run tests with coverage
       run: |
         pytest --cov=core --cov-report=term-missing --cov-fail-under=80
