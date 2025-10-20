@@ -34,3 +34,6 @@ cover/
 .Readme2.md
 views2.py
 gcp-keys/
+settings2.py
+app2.yaml
+resolve_secrets.py
