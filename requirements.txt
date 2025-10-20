@@ -13,6 +13,7 @@ Django==5.2.6
 django-heroku==0.3.1
 djangorestframework==3.16.1
 dotenv==0.9.9
+flake8==7.3.0
 google-api-core==2.26.0
 google-auth==2.41.1
 google-cloud-secret-manager==2.25.0
@@ -26,6 +27,7 @@ iniconfig==2.1.0
 Jinja2==3.1.6
 josepy==2.1.0
 MarkupSafe==3.0.3
+mccabe==0.7.0
 mozilla-django-oidc==4.0.1
 packaging==25.0
 pluggy==1.6.0
@@ -35,7 +37,9 @@ psycopg2==2.9.10
 psycopg2-binary==2.9.10
 pyasn1==0.6.1
 pyasn1_modules==0.4.2
+pycodestyle==2.14.0
 pycparser==2.23
+pyflakes==3.4.0
 Pygments==2.19.2
 pytest==8.4.2
 pytest-cov==7.0.0
