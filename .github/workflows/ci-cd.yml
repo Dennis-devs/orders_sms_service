@@ -2,68 +2,68 @@ name: CI/CD - Test and Deploy to Google App Engine
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
     branches: [ "main", "dev" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   ci-test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.13.7'
-    - name: Install Ansible
-      run: |
-        python -m pip install --upgrade pip
-        pip install ansible
-    - name: Run Ansible playbook to set up environment
-      run: ansible-playbook ansible/setup.yml
-    - name: Run tests with coverage
-      run: |
-        pytest --cov=core --cov-report=term-missing --cov-fail-under=80
-      env:
-        DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-        AFRICASTALKING_USERNAME: sandbox
-        AFRICASTALKING_API_KEY: ${{ secrets.AFRICASTALKING_API_KEY }}
-        OIDC_CLIENT_ID: test-id  # Mock for tests
-        OIDC_CLIENT_SECRET: test-secret
-        DATABASE_URL: sqlite:///memory:  # In-memory DB for speed
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.7'
+      - name: Install Ansible
+        run: |
+          python -m pip install --upgrade pip
+          pip install ansible
+      - name: Run Ansible playbook to set up environment
+        run: ansible-playbook ansible/setup.yml
+      - name: Run tests with coverage
+        run: |
+          pytest --cov=core --cov-report=term-missing --cov-fail-under=80
+        env:
+          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+          AFRICASTALKING_USERNAME: sandbox
+          AFRICASTALKING_API_KEY: ${{ secrets.AFRICASTALKING_API_KEY }}
+          OIDC_CLIENT_ID: test-id  # Mock for tests
+          OIDC_CLIENT_SECRET: test-secret
+          DATABASE_URL: sqlite:///memory:  # In-memory DB for speed
 
   cd-deploy:
     runs-on: ubuntu-latest
     needs: ci-test  # Only run if tests pass
     if: github.ref == 'refs/heads/main'
     steps:
-    - uses: actions/checkout@v4
-    - name: Authenticate to Google Cloud
-      uses: google-github-actions/auth@v2
-      with:
-        credentials_json: ${{ secrets.GCP_SA_KEY }}
-    - name: Set up Cloud SDK
-      uses: google-github-actions/setup-gcloud@v2
-    - name: Deploy to App Engine
-      run: gcloud app deploy app.yaml --quiet --project sms-service-474413
-      env:
-        DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-        AFRICASTALKING_USERNAME: ${{ secrets.AFRICASTALKING_USERNAME }}
-        AFRICASTALKING_API_KEY: ${{ secrets.AFRICASTALKING_API_KEY }}
-        OIDC_CLIENT_ID: ${{ secrets.OIDC_CLIENT_ID }}
-        OIDC_CLIENT_SECRET: ${{ secrets.OIDC_CLIENT_SECRET }}
-        OIDC_AUTH_ENDPOINT: ${{ secrets.OIDC_AUTH_ENDPOINT }}
-        OIDC_TOKEN_ENDPOINT: ${{ secrets.OIDC_TOKEN_ENDPOINT }}
-        OIDC_USER_ENDPOINT: ${{ secrets.OIDC_USER_ENDPOINT }}
-        OIDC_JWKS_ENDPOINT: ${{ secrets.OIDC_JWKS_ENDPOINT }}
-        DATABASE_URL: ${{ secrets.DATABASE_URL }}  # Cloud SQL string
-        ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
-        APP_ENGINE_HOST_VERSION: ${{ secrets.APP_ENGINE_HOST_VERSION }}
-        CONNECTION_STRING: ${{ secrets.CONNECTION_STRING }}
-        INSTANCE_CONNECTION_NAME: ${{ secrets.INSTANCE_CONNECTION_NAME }}
-        DB_USER: ${{ secrets.DB_USER }}
-        DB_NAME: ${{ secrets.DB_NAME }}
-        DB_PASS: ${{ secrets.DB_PASS }}
-        GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
-    - name: Run migrations on GAE
-      run: gcloud app instances ssh --project sms-service-474413 --service default --version $(gcloud app versions list --project sms-service-474413 --format='value(version.id)' --sort-by=~deployed | head -n 1) -- python manage.py migrate
+      - uses: actions/checkout@v4
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+      - name: Deploy to App Engine
+        run: gcloud app deploy app.yaml --quiet --project sms-service-474413
+        env:
+          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+          AFRICASTALKING_USERNAME: ${{ secrets.AFRICASTALKING_USERNAME }}
+          AFRICASTALKING_API_KEY: ${{ secrets.AFRICASTALKING_API_KEY }}
+          OIDC_CLIENT_ID: ${{ secrets.OIDC_CLIENT_ID }}
+          OIDC_CLIENT_SECRET: ${{ secrets.OIDC_CLIENT_SECRET }}
+          OIDC_AUTH_ENDPOINT: ${{ secrets.OIDC_AUTH_ENDPOINT }}
+          OIDC_TOKEN_ENDPOINT: ${{ secrets.OIDC_TOKEN_ENDPOINT }}
+          OIDC_USER_ENDPOINT: ${{ secrets.OIDC_USER_ENDPOINT }}
+          OIDC_JWKS_ENDPOINT: ${{ secrets.OIDC_JWKS_ENDPOINT }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}  # Cloud SQL string
+          ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
+          APP_ENGINE_HOST_VERSION: ${{ secrets.APP_ENGINE_HOST_VERSION }}
+          CONNECTION_STRING: ${{ secrets.CONNECTION_STRING }}
+          INSTANCE_CONNECTION_NAME: ${{ secrets.INSTANCE_CONNECTION_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+      - name: Run migrations on GAE
+        run: gcloud app instances ssh --project sms-service-474413 --service default --version $(gcloud app versions list --project sms-service-474413 --format='value(version.id)' --sort-by=~deployed | head -n 1) -- python manage.py migrate
