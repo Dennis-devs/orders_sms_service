@@ -15,26 +15,23 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: '3.13.7'
-    - name: Install Ansible
+    - name: Install dependencies and run tests
       run: |
         python -m venv venv
         source venv/bin/activate
         python -m pip install --upgrade pip
         pip install ansible
         pip install -r requirements.txt
-    - name: Create Ansible Inventory File
-      run: |
+        
+        # Create Ansible Inventory File
         mkdir -p ansible/inventory
         echo '[test_hosts]' > ansible/inventory/hosts
         echo 'localhost ansible_connection=local' >> ansible/inventory/hosts      
-    - name: Run Ansible playbook to set up environment
-      run: |
-        source venv/bin/activate 
+        
+        # Run Ansible Playbook to set up environment
         ansible-playbook ansible/setup.yml -i ansible/inventory/hosts, --connection=local --extra-vars "ansible_python_interpreter=$(pwd)/venv/bin/python"
-    - name: Run tests with coverage
-      run: |
-        source venv/bin/activate
-        export PYTHONPATH="$GITHUB_WORKSPACE"
+
+        # Run tests with coverage
         python -m pytest --cov=orders_mgmt --cov-report=term-missing --cov-fail-under=80
       env:
         DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
