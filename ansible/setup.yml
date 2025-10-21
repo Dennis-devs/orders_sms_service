@@ -18,5 +18,5 @@
     - name: Run Django migrations
       django_manage:
         command: migrate
-        app_path: "{{ playbook_dir }}/../"
+        app_path: "{{ playbook_dir }}/../orders_sms_service"
         virtualenv: "{{ playbook_dir }}/../venv"
