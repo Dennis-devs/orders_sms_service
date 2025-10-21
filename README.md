@@ -1,3 +1,5 @@
+# Deployed Service link: https://sms-service-474413.ew.r.appspot.com/
+
 # Django Order Management System
 
 <p>This project is a Django REST API for managing customers and orders, with secure user authentication via OIDC with Auth0 and SMS  service using Africa's Talking.<p>
