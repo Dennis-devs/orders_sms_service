@@ -1,0 +1,11 @@
+runtime: python313
+service: migrations
+entrypoint: python manage.py migrate --noinput
+manual_scaling:
+  instances: 1
+  
+env_variables:
+  DB_USER: "projects/363219040361/secrets/DB_USER/versions/latest"
+  DB_PASS: "projects/363219040361/secrets/DB_PASS/versions/latest"
+  DB_NAME: "projects/363219040361/secrets/DB_NAME/versions/latest"
+  INSTANCE_CONNECTION_NAME: "projects/363219040361/secrets/INSTANCE_CONNECTION_NAME/versions/latest"

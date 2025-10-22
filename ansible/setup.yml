@@ -1,5 +1,5 @@
 - name: Setup Django SMS Service Environment
-  hosts: localhost
+  hosts: test_hosts
   connection: local
   vars:
     ansible_python_interpreter: "{{ lookup('env', 'PWD') }}/venv/bin/python"
