@@ -32,7 +32,7 @@ jobs:
 
         # Run Ansible Playbook to set up environment
 
-        ansible-playbook ansible/setup.yml -i "localhost", --connection=local --extra-vars "ansible_python_interpreter=$(pwd)/venv/bin/python"
+        ansible-playbook ansible/setup.yml -i ansible/inventory/hosts, --connection=local --extra-vars "ansible_python_interpreter=$(pwd)/venv/bin/python"
 
         export PYTHONPATH="$GITHUB_WORKSPACE:$GITHUB_WORKSPACE/orders_sms_service/" python -m pytest --cov=orders_mgmt --cov-report=term-missing --cov-fail-under=80
       env:
