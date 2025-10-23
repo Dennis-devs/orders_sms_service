@@ -17,11 +17,11 @@ jobs:
         python-version: '3.13.7'
     - name: Install dependencies and run tests
       run: |
-        # python -m venv venv
-        # source venv/bin/activate
+        python -m venv venv
+        source venv/bin/activate
         python -m pip install --upgrade pip
         pip install ansible
-        # pip install -r requirements.txt    
+        pip install -r requirements.txt    
         
 
         # Create Ansible Inventory File
