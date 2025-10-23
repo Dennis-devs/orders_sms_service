@@ -1,9 +1,11 @@
 - name: Setup Django SMS Service Environment
   hosts: localhost
+  become: false
   connection: local
   vars:
-    ansible_python_interpreter: "{{ lookup('env', 'PWD') }}/venv/bin/python"
-    project_path: "{{ playbook_dir }}/../orders_sms_service"
+    # ansible_python_interpreter: "{{ lookup('env', 'PWD') }}/venv/bin/python"
+    project_path: "{{ playbook_dir }}/../"
+    virtualenv: "{{ playbook_dir }}/../venv"
   tasks:
     - name: Install Python and pip
       package:
@@ -18,7 +20,7 @@
         executable: pip3
     - name: Run Django migrations
       django_manage:
-        command: python3 {{ project_path }}/manage.py migrate
-        PYTHONPATH: "{{ project_path }}:{{ project_path }}/orders_sms_service"
-        virtualenv: "{{ playbook_dir }}/../venv"
+        command: "{{ virtualenv }}/bin/python3 {{ project_path }}/manage.py migrate"
+        # PYTHONPATH: "{{ project_path }}:{{ project_path }}/orders_sms_service"
+        
         
