@@ -29,6 +29,8 @@ jobs:
         mkdir -p ansible/inventory
         echo '[test_hosts]' > ansible/inventory/hosts.ini
         echo 'localhost ansible_connection=local' >> ansible/inventory/hosts.ini
+        echo 'project_path=/Users/celestineakoth/Desktop/Python_Django/orders_sms_service/orders_mgmt' >> ansible/inventory/hosts.ini
+
 
         # Run Ansible Playbook to set up environment
 
