@@ -4,7 +4,7 @@
   connection: local
   vars:
     # ansible_python_interpreter: "{{ lookup('env', 'PWD') }}/venv/bin/python"
-    project_path: "{{ playbook_dir }}/../"
+    app_path: "{{ playbook_dir }}/../"
     virtualenv: "{{ playbook_dir }}/../venv"
   tasks:
     - name: Install Python and pip
@@ -20,7 +20,7 @@
         executable: pip3
     - name: Run Django migrations
       django_manage:
-        command: "{{ virtualenv }}/bin/python3 {{ project_path }}/manage.py migrate"
-        PYTHONPATH: "{{ playbook_dir }}/../"
+        command: "{{ virtualenv }}/bin/python3 {{ app_path }}/manage.py migrate"
+        project_path: "{{ playbook_dir }}/../"
         
         
