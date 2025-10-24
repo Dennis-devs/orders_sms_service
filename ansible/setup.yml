@@ -21,6 +21,6 @@
     - name: Run Django migrations
       django_manage:
         command: "{{ virtualenv }}/bin/python3 {{ project_path }}/manage.py migrate"
-        # PYTHONPATH: "{{ project_path }}:{{ project_path }}/orders_sms_service"
+        PYTHONPATH: "{{ playbook_dir }}/../"
         
         
