@@ -34,7 +34,7 @@ jobs:
 
         ansible-playbook ansible/setup.yml -i ansible/inventory/hosts.ini, --connection=local --extra-vars "ansible_python_interpreter=$(pwd)/venv/bin/python"
 
-        export PYTHONPATH="$GITHUB_WORKSPACE:$GITHUB_WORKSPACE/orders_sms_service/" python -m pytest --cov=orders_mgmt --cov-report=term-missing --cov-fail-under=80
+        export PYTHONPATH="$GITHUB_WORKSPACE:$GITHUB_WORKSPACE/orders_mgmt/" python -m pytest --cov=orders_mgmt --cov-report=term-missing --cov-fail-under=80
       env:
         DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
         AFRICASTALKING_USERNAME: sandbox
