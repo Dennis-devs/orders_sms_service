@@ -20,7 +20,7 @@
         executable: pip3
     - name: Run Django migrations
       django_manage:
-        command: "python3 {{app_path}}/manage.py migrate"
+        command: "python3 manage.py migrate"
         project_path: "{{ playbook_dir }}/../"
         
         
