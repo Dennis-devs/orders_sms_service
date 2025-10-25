@@ -4,7 +4,7 @@
   connection: local
   vars:
     # ansible_python_interpreter: "{{ lookup('env', 'PWD') }}/venv/bin/python"
-    app_path: "{{ playbook_dir }}/../orders_sms_service"
+    app_path: "{{ playbook_dir }}/../"
     # virtualenv: "{{ playbook_dir }}/../venv"
   tasks:
     - name: Install Python and pip
@@ -16,7 +16,7 @@
       become: false  # Requires sudo
     - name: Install project dependencies
       pip:
-        requirements: "{{ playbook_dir }}/../requirements.txt:{{ app_path }}/requirements.txt"
+        requirements: "{{ app_path }}/requirements.txt"
         executable: "{{ ansible_python_interpreter | default('pip3') }}"
     - name: Run Django migrations
       command: "{{ ansible_python_interpreter | default('python3') }} {{ app_path }}/manage.py migrate"
