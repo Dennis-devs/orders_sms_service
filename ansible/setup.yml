@@ -21,7 +21,7 @@
     - name: Run Django migrations
       command: "{{ ansible_python_interpreter | default('python3') }} {{ app_path }}/manage.py migrate"
       environment:
-        PYTHONPATH: "{{ app_path }}:{{ app_path }}/orders_sms_service"
+        PYTHONPATH: "{{ app_path }}:{{ app_path }}"
         DJANGO_SECRET_KEY: "{{ lookup('env', 'DJANGO_SECRET_KEY') }}"
         DATABASE_URL: "sqlite:///:memory:"
         AFRICASTALKING_USERNAME: "sandbox"
