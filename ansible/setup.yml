@@ -18,10 +18,19 @@
       pip:
         requirements: "{{ app_path }}/requirements.txt"
         executable: pip3
-    - name: Install App   
-      command: python3 -c "import orders_mgmt";
-      environment: 
-        PYTHONPATH: "$GITHUB_WORKSPACE:$GITHUB_WORKSPACE/orders_sms_service/"  
+    - name: Display Python executable path (Linux/macOS)
+      command: which python3  # Or 'which python' depending on your setup
+      register: python_path_linux
+      changed_when: false  
+    - name: Display PYTHONPATH environment variable
+      command: echo $PYTHONPATH
+      register: pythonpath_env
+      changed_when: false  
+    - name: Print Python path and PYTHONPATH
+      debug:
+        msg:
+          - "Python Executable (Linux/macOS): {{ python_path_linux.stdout | default('Not applicable') }}  
+          - "PYTHONPATH: {{ pythonpath_env.stdout | default('Not set') }}"
     - name: Run Django migrations
       command: "{{ ansible_python_interpreter | default('python3') }} {{ app_path }}/manage.py migrate"
       environment:
