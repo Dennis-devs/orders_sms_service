@@ -34,7 +34,7 @@
     - name: Print Python path and PYTHONPATH
       debug:
         msg:
-          - "Python Executable (Linux/macOS): {{ python_path_linux.stdout | default('Not applicable') }}  
+          - "Python Executable (Linux/macOS): {{ python_path_linux.stdout | default('Not applicable') }}"  
           - "Python Executable (Windows): {{ python_path_windows.stdout | default('Not applicable') if ansible_os_family == 'Windows' else 'Not applicable (Linux/macOS target)') }}"
           - "PYTHONPATH: {{ pythonpath_env.stdout | default('Not set') }}"
     - name: Run Django migrations
