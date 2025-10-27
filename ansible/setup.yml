@@ -18,6 +18,7 @@
       pip:
         requirements: "{{ app_path }}/requirements.txt"
         executable: pip3
+      command: python3 -c "import orders_mgmt"  
     - name: Run Django migrations
       command: "{{ ansible_python_interpreter | default('python3') }} {{ app_path }}/manage.py migrate"
       environment:
