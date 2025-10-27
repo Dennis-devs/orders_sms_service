@@ -5,7 +5,6 @@
   vars:
     # ansible_python_interpreter: "{{ lookup('env', 'PWD') }}/venv/bin/python"
     app_path: "{{ playbook_dir }}/../"
-    PYTHONPATH: "$GITHUB_WORKSPACE:$GITHUB_WORKSPACE/orders_sms_service/"
     # virtualenv: "{{ playbook_dir }}/../venv"
   tasks:
     - name: Install Python and pip
@@ -20,7 +19,9 @@
         requirements: "{{ app_path }}/requirements.txt"
         executable: pip3
     - name: Install App   
-      command: python3 -c  {{ app_path }}/"import orders_mgmt"   
+      command: python3 -c "import orders_mgmt;
+      environment: 
+        PYTHONPATH: "$GITHUB_WORKSPACE:$GITHUB_WORKSPACE/orders_sms_service/"  
     - name: Run Django migrations
       command: "{{ ansible_python_interpreter | default('python3') }} {{ app_path }}/manage.py migrate"
       environment:
