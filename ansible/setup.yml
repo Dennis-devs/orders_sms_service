@@ -19,7 +19,7 @@
         requirements: "{{ app_path }}/requirements.txt"
         executable: pip3
     - name: Install App   
-      command: python3 -c "import orders_mgmt;
+      command: python3 -c "import orders_mgmt";
       environment: 
         PYTHONPATH: "$GITHUB_WORKSPACE:$GITHUB_WORKSPACE/orders_sms_service/"  
     - name: Run Django migrations
