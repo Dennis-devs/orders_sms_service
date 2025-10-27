@@ -35,7 +35,7 @@
       debug:
         msg:
           - "Python Executable (Linux/macOS): {{ python_path_linux.stdout | default('Not applicable') }}"  
-          - "Python Executable (Windows): {{ python_path_windows.stdout | default('Not applicable') if ansible_os_family == 'Windows' else 'Not applicable (Linux/macOS target)') }}"
+          - "Python Executable (Windows): {{ python_path_windows.stdout | default('Not applicable') }}"
           - "PYTHONPATH: {{ pythonpath_env.stdout | default('Not set') }}"
     - name: Run Django migrations
       command: "{{ ansible_python_interpreter | default('python3') }} {{ app_path }}/manage.py migrate"
