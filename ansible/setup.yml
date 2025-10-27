@@ -22,6 +22,11 @@
       command: which python3  # Or 'which python' depending on your setup
       register: python_path_linux
       changed_when: false  
+    - name: Display Python executable path (Windows - if applicable)
+      win_command: where python # Use win_command for Windows targets
+      register: python_path_windows
+      changed_when: false
+      when: ansible_os_family == "Windows"  
     - name: Display PYTHONPATH environment variable
       command: echo $PYTHONPATH
       register: pythonpath_env
