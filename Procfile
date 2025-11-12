@@ -1,0 +1,1 @@
+web: gunicorn orders_sms_service.wsgi:application --bind 0.0.0.0:$PORT

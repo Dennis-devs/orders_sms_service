@@ -118,71 +118,69 @@ WSGI_APPLICATION = 'orders_sms_service.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+if not DEBUG:
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.getenv('DATABASE_URL'),
+            conn_max_age=600,
+        )
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+# def get_secret_value(secret_id, project_id="sms-service-474413"):
+#     """Fetches a secret from Secret Manager."""
+#     try:
+#         client = secretmanager.SecretManagerServiceClient()
+#         name = f"projects/{project_id}/secrets/{secret_id}/versions/latest"
+#         response = client.access_secret_version(name=name)
+#         return response.payload.data.decode('UTF-8')
+#     except Exception as e:
+#         # Handling error appropriately (e.g., fallback or raise)
+#         print(f"Failed to fetch secret '{secret_id}': {e}")
+#         return None
 
-# DATABASES = {
-#         'default': dj_database_url.config(
-#             default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'),
+# # Check if running on Google Cloud App Engine
+# if os.getenv('GAE_APPLICATION') or os.getenv('GAE_ENV') == 'standard':
+#     # Production settings on App Engine
+#     project_id = "sms-service-474413"
+
+#     # Fetch all secrets before building the DATABASE_URL
+#     db_user = get_secret_value("DB_USER", project_id)
+#     db_pass = get_secret_value("DB_PASS", project_id)
+#     db_name = get_secret_value("DB_NAME", project_id)
+#     instance_connection_name = get_secret_value("INSTANCE_CONNECTION_NAME", project_id)
+
+#     database_url = f"postgresql://{db_user}:{db_pass}@/{db_name}?host=/cloudsql/{instance_connection_name}"
+
+#     # Configuration for App Engine
+#     DATABASES = {
+#         'default': dj_database_url.parse(
+#             database_url,
 #             conn_max_age=600,
-#             ssl_require=not DEBUG
+#             ssl_require=False
 #         )
 #     }
 
+#     SECRET_KEY = get_secret_value("DJANGO_SECRET_KEY", project_id)
+#     ALLOWED_HOSTS = get_secret_value("ALLOWED_HOSTS", project_id).split(',')
+# else:
+#     # Fallback for local development
+#     DATABASES = {
+#         'default': dj_database_url.config(
+#             default='sqlite:////app/db.sqlite3',
+#             conn_max_age=600,
+#         )
+#     }
 
-def get_secret_value(secret_id, project_id="sms-service-474413"):
-    """Fetches a secret from Secret Manager."""
-    try:
-        client = secretmanager.SecretManagerServiceClient()
-        name = f"projects/{project_id}/secrets/{secret_id}/versions/latest"
-        response = client.access_secret_version(name=name)
-        return response.payload.data.decode('UTF-8')
-    except Exception as e:
-        # Handling error appropriately (e.g., fallback or raise)
-        print(f"Failed to fetch secret '{secret_id}': {e}")
-        return None
-
-# Check if running on Google Cloud App Engine
-if os.getenv('GAE_APPLICATION') or os.getenv('GAE_ENV') == 'standard':
-    # Production settings on App Engine
-    project_id = "sms-service-474413"
-
-    # Fetch all secrets before building the DATABASE_URL
-    db_user = get_secret_value("DB_USER", project_id)
-    db_pass = get_secret_value("DB_PASS", project_id)
-    db_name = get_secret_value("DB_NAME", project_id)
-    instance_connection_name = get_secret_value("INSTANCE_CONNECTION_NAME", project_id)
-
-    database_url = f"postgresql://{db_user}:{db_pass}@/{db_name}?host=/cloudsql/{instance_connection_name}"
-
-    # Configuration for App Engine
-    DATABASES = {
-        'default': dj_database_url.parse(
-            database_url,
-            conn_max_age=600,
-            ssl_require=False
-        )
-    }
-
-    SECRET_KEY = get_secret_value("DJANGO_SECRET_KEY", project_id)
-    ALLOWED_HOSTS = get_secret_value("ALLOWED_HOSTS", project_id).split(',')
-else:
-    # Fallback for local development
-    DATABASES = {
-        'default': dj_database_url.config(
-            default='sqlite:////app/db.sqlite3',
-            conn_max_age=600,
-        )
-    }
-
-    SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'SEC')
-    ALLOWED_HOSTS = f'{os.getenv('ALLOWED_HOSTS')},localhost,127.0.0.1'.split(',')
+#     SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'SEC')
+#     ALLOWED_HOSTS = f'{os.getenv('ALLOWED_HOSTS')},localhost,127.0.0.1'.split(',')
 
 LOGGING = {
     'version': 1,
