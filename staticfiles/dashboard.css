@@ -1,0 +1,29 @@
+body{
+    background-color: cadetblue;
+}
+
+nav{
+    background-color: darkkhaki;
+    margin-top: 5px;
+    height: 70px;
+    display: flex;
+    flex-direction: ;
+    justify-items: ;
+    justify-content: ;
+    
+
+}
+nav > a{
+    text-decoration: none;
+    border: 2px solid white;
+    border-radius: 4px;
+    padding: 3px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+}
+
+button{
+    margin-top: 20px;
+    margin-left: 20px;
+}

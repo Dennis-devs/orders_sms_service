@@ -1,8 +1,11 @@
 - name: Setup Django SMS Service Environment
   hosts: localhost
+  become: false
   connection: local
   vars:
-    ansible_python_interpreter: "{{ lookup('env', 'PWD') }}/venv/bin/python"
+    # ansible_python_interpreter: "{{ lookup('env', 'PWD') }}/venv/bin/python"
+    app_path: "{{ playbook_dir }}/../"
+    # virtualenv: "{{ playbook_dir }}/../venv"
   tasks:
     - name: Install Python and pip
       package:
@@ -10,13 +13,39 @@
           - python3
           - python3-pip
         state: present
-      become: yes  # Requires sudo
+      become: false  # Requires sudo
     - name: Install project dependencies
       pip:
-        requirements: "{{ playbook_dir }}/../requirements.txt"
+        requirements: "{{ app_path }}/requirements.txt"
         executable: pip3
+    - name: Display Python executable path (Linux/macOS)
+      command: which python3  # Or 'which python' depending on your setup
+      register: python_path_linux
+      changed_when: false  
+    - name: Display Python executable path (Windows - if applicable)
+      win_command: where python # Use win_command for Windows targets
+      register: python_path_windows
+      changed_when: false
+      when: ansible_os_family == "Windows"  
+    - name: Display PYTHONPATH environment variable
+      command: echo $PYTHONPATH
+      register: pythonpath_env
+      changed_when: false  
+    - name: Print Python path and PYTHONPATH
+      debug:
+        msg:
+          - "Python Executable (Linux/macOS): {{ python_path_linux.stdout | default('Not applicable') }}"  
+          - "Python Executable (Windows): {{ python_path_windows.stdout | default('Not applicable') }}"
+          - "PYTHONPATH: {{ pythonpath_env.stdout | default('Not set') }}"
     - name: Run Django migrations
-      django_manage:
-        command: migrate
-        app_path: "{{ playbook_dir }}/../"
-        virtualenv: "{{ playbook_dir }}/../venv"
+      command: "{{ ansible_python_interpreter | default('python3') }} {{ app_path }}/manage.py migrate"
+      environment:
+        PYTHONPATH: "{{ app_path }}:{{ app_path }}"
+        DJANGO_SECRET_KEY: "{{ lookup('env', 'DJANGO_SECRET_KEY') }}"
+        DATABASE_URL: "sqlite:///:memory:"
+        AFRICASTALKING_USERNAME: "sandbox"
+        AFRICASTALKING_API_KEY: "{{ lookup('env', 'AFRICASTALKING_API_KEY') }}"
+        OIDC_CLIENT_ID: "test-id"
+        OIDC_CLIENT_SECRET: "test-secret"
+        
+        

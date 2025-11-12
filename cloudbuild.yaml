@@ -1,0 +1,41 @@
+steps:
+  # Build the Docker image for your application
+  -name: 'gcr.io/cloud-builders/docker'
+   args: [ 'build', '-t', 'gcr.io/$PROJECT_ID/orders-sms-service', '.' ]
+
+  # Push the Docker image to Google Container Registry (Artifact Registry)
+  -name: 'gcr.io/cloud-builders/docker'
+   args: [ 'push', 'gcr.io/$PROJECT_ID/orders-sms-service' ]
+
+  # Run migrations using the pushed Docker image
+  -name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        docker run \
+        -e GOOGLE_CLOUD_PROJECT=$PROJECT_ID \
+        -e DJANGO_SECRET_KEY=$(gcloud secrets versions access latest --secret=DJANGO_SECRET_KEY) --format='get(payload.data)' \
+        -e AFRICASTALKING_USERNAME=$(gcloud secrets versions access latest --secret=AFRICASTALKING_USERNAME) --format='get(payload.data) \
+        -e AFRICASTALKING_API_KEY=$(gcloud secrets versions access latest --secret=AFRICASTALKING_API_KEY) --format='get(payload.data) \
+        -e OIDC_CLIENT_ID=$(gcloud secrets versions access latest --secret=OIDC_CLIENT_ID) --format='get(payload.data) \
+        -e OIDC_CLIENT_SECRET=$(gcloud secrets versions access latest --secret=OIDC_CLIENT_SECRET) --format='get(payload.data) \
+        -e OIDC_AUTH_ENDPOINT=$(gcloud secrets versions access latest --secret=OIDC_AUTH_ENDPOINT) --format='get(payload.data) \
+        -e OIDC_TOKEN_ENDPOINT=$(gcloud secrets versions access latest --secret=OIDC_TOKEN_ENDPOINT) --format='get(payload.data) \
+        -e OIDC_USER_ENDPOINT=$(gcloud secrets versions access latest --secret=OIDC_USER_ENDPOINT) --format='get(payload.data) \
+        -e OIDC_JWKS_ENDPOINT=$(gcloud secrets versions access latest --secret=OIDC_JWKS_ENDPOINT) --format='get(payload.data) \
+        -e DATABASE_URL=$(gcloud secrets versions access latest --secret=DATABASE_URL) --format='get(payload.data)') \
+        gcr.io/$PROJECT_ID/orders-sms-service 
+        python manage.py migrate --noinput
+    secretEnv: ['DATABASE_URL', 'DJANGO_SECRET_KEY']  
+
+  # Deploy the application to App Engine
+  -name: 'gcr.io/cloud-builders/gcloud'
+   args: [ 'app', 'deploy', 'app.yaml']
+
+availableSecrets:
+  secretManager:
+    - versionName: projects/363219040361/secrets/DATABASE_URL/versions/latest
+      env: 'DATABASE_URL'
+    - versionName: projects/363219040361/secrets/DJANGO_SECRET_KEY/versions/latest
+      env: 'DJANGO_SECRET_KEY'   
