@@ -9,7 +9,7 @@ import africastalking as africastalking
 import os
 import requests
 
-
+# View instantiates the serializer class, passing the parsed(incoming JSON to python datatype e.g dictionary) data from the request to it.
 class CustomerViewSet(viewsets.ModelViewSet):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
@@ -21,8 +21,10 @@ class OrderViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]   
 
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+        serializer = self.get_serializer(data=request.data) 
+        # validation checks
         serializer.is_valid(raise_exception=True)
+        # If valid: The serializer's validated_data attribute is populated with the clean, validated Python data. view also saves the new order instance to the database by triggering perform_create or create() method.
         self.perform_create(serializer)
         order = serializer.instance
         customer = order.customer
@@ -48,11 +50,12 @@ class OrderViewSet(viewsets.ModelViewSet):
         }
 
         try:
+            # send response to africastalking gateway
             response = requests.post(url, headers=headers, data=data)
             response_data = response.json()
-            
+        # Serializer serializes saved Python object back into a native Python dictionary. DRF's renderer classes then convert this dictionary into a JSON response.
             return Response(response_data, status=201)
-            
+        # error handling    
         except Exception as e:
             return {
                 'success': False,

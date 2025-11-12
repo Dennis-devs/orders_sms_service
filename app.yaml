@@ -1,5 +1,4 @@
 runtime: python313
-env: flex
 
 entrypoint: gunicorn -b :$PORT orders_sms_service.wsgi:application # Run gunicorn on GAE’s $PORT
 
@@ -8,12 +7,11 @@ runtime_config:
 
 # env vars are in GitHub secrets for security
 
-
-
 # Handlers serve static files via whitenoise and ensures HTTPS.
 handlers:
 - url: /static
   static_dir: staticfiles
+  expiration: 1d
 - url: /.*
   script: auto
   secure: always

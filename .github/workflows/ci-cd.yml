@@ -2,9 +2,9 @@ name: CI/CD - Test and Deploy to Google App Engine
 
 on:
   push:
-    branches: [ "main"]
+    branches: []
   pull_request:
-    branches: [ "main", "dev" ]
+    branches: []
 
 jobs:
   ci-test:
@@ -23,17 +23,19 @@ jobs:
         pip install ansible
         pip install -r requirements.txt    
         
+
         # Run Ansible Playbook to set up environment
+        
         ansible-playbook ansible/setup.yml -i "localhost", --connection=local --extra-vars "ansible_python_interpreter=$(pwd)/venv/bin/python"
 
-        export PYTHONPATH="$GITHUB_WORKSPACE:$GITHUB_WORKSPACE/orders_sms_service" python -m pytest --cov=orders_mgmt --cov-report=term-missing --cov-fail-under=80
+        export PYTHONPATH="$GITHUB_WORKSPACE:$GITHUB_WORKSPACE/orders_sms_service/" python -m pytest --cov=orders_mgmt --cov-report=term-missing --cov-fail-under=80
       env:
         DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
         AFRICASTALKING_USERNAME: sandbox
         AFRICASTALKING_API_KEY: ${{ secrets.AFRICASTALKING_API_KEY }}
         OIDC_CLIENT_ID: test-id  # Mock for tests
         OIDC_CLIENT_SECRET: test-secret
-        DATABASE_URL: 'sqlite:///memory:'  # In-memory DB for speed
+        DATABASE_URL: "sqlite:///memory:"  # In-memory DB for speed
 
   cd-deploy:
     runs-on: ubuntu-latest
