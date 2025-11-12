@@ -12,20 +12,21 @@ RUN apt-get update && apt-get install -y \
 
 # Copy requirements and install deps
 COPY requirements.txt .
+RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
 ENV DJANGO_SECRET_KEY=os.getenv('SECRET_KEY')
-ENV DATABASE_URL="sqlite:////app/db.sqlite3"
+ENV DATABASE_URL=os.getenv('DATABASE_URL')
 
 # Copy the rest of the app
 COPY . .
 RUN chmod -R 777 /app
 # Run migrations and collect static files (optional, can be in entrypoint)
-RUN python manage.py makemigrations && python manage.py migrate
-RUN python manage.py collectstatic --noinput
+# RUN python manage.py makemigrations && python manage.py migrate
+RUN python manage.py collectstatic --no-input
 
 # Expose port for GAE
-EXPOSE 8080
+# EXPOSE 8080
 
 # Run with Gunicorn for production
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "2", "orders_sms_service.wsgi:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:$PORT", "--workers", "2", "orders_sms_service.wsgi:application"]
