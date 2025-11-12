@@ -225,19 +225,22 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # For development only
 STATIC_DIRS = [
     BASE_DIR / 'static'
 ]
 
-if os.getenv('GAE_APPLICATION'):
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-else:
-    STATICFILES_STORAGE = {
-        "staticfiles": {
-            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-        },
-    }
+
+# if os.getenv('GAE_APPLICATION'):
+#     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# else:
+#     STATICFILES_STORAGE = {
+#         "staticfiles": {
+#             "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+#         },
+#     }
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
