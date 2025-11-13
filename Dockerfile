@@ -23,9 +23,9 @@ COPY . .
 RUN chmod -R 777 /app
 # Run migrations and collect static files (optional, can be in entrypoint)
 # RUN python manage.py makemigrations && python manage.py migrate
-# RUN python manage.py collectstatic --noinput
+RUN python manage.py collectstatic --noinput
 
-# Expose port for GAE
+# Expose port 
 # EXPOSE 8080
 
 # Run with Gunicorn for production
