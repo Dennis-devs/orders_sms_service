@@ -120,7 +120,6 @@ WSGI_APPLICATION = 'orders_sms_service.wsgi.application'
 
 if not DEBUG:
     database_url = os.environ.get('DATABASE_URL')
-    print("Production database URL:", database_url)  # Debugging line
     DATABASES = {
         'default': dj_database_url.config(
             default=database_url,

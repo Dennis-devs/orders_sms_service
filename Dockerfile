@@ -4,6 +4,11 @@ FROM python:3.13.7-slim
 # Set working directory
 WORKDIR /app
 
+# install dependencies into a virtual environment
+RUN python3 -m venv venv
+ENV PATH="/app/venv/bin:$PATH"
+
+
 # Install system dependencies (for psycopg2, etc.)
 RUN apt-get update && apt-get install -y \
     libpq-dev \
@@ -25,8 +30,10 @@ RUN chmod -R 777 /app
 # RUN python manage.py makemigrations && python manage.py migrate
 RUN python manage.py collectstatic --noinput
 
+
 # Expose port 
 # EXPOSE 8080
 
 # Run with Gunicorn for production
-CMD ["gunicorn", "--bind", "0.0.0.0:$PORT", "--workers", "2", "orders_sms_service.wsgi:application"]
+# CMD ["gunicorn", "--bind", "0.0.0.0:$PORT", "--workers", "2", "orders_sms_service.wsgi:application"]
+CMD ["/bin/sh", "-c", "python manage.py migrate --no-input && gunicorn orders_sms_service.wsgi:application --bind 0.0.0.0:$PORT"]
