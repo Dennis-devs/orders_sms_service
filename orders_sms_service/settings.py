@@ -119,9 +119,11 @@ WSGI_APPLICATION = 'orders_sms_service.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 if not DEBUG:
+    database_url = os.environ.get('DATABASE_URL')
+    print("Production database URL:", database_url)  # Debugging line
     DATABASES = {
         'default': dj_database_url.parse(
-            os.environ.get('DATABASE_URL'),
+            database_url,
             conn_max_age=600,
         )
     }
