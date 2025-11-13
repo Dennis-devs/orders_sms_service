@@ -15,8 +15,8 @@ COPY requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-ENV DJANGO_SECRET_KEY=os.getenv('SECRET_KEY')
-ENV DATABASE_URL=os.getenv('DATABASE_URL')
+ENV SECRET_KEY=os.environ.get('SECRET_KEY')
+ENV DATABASE_URL=os.environ.get('DATABASE_URL')
 
 # Copy the rest of the app
 COPY . .
