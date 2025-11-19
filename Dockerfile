@@ -28,7 +28,15 @@ COPY . .
 RUN chmod -R 777 /app
 # Run migrations and collect static files (optional, can be in entrypoint)
 # RUN python manage.py makemigrations && python manage.py migrate
-RUN python manage.py collectstatic --noinput
+# RUN python manage.py collectstatic --noinput
+# Copy the script into the container
+COPY entrypoint.sh /app/entrypoint.sh
+
+# Make the script executable
+RUN chmod +x /app/entrypoint.sh
+
+# Tell Docker to run this script when the container starts
+CMD ["/app/entrypoint.sh"] 
 
 
 # Expose port 
@@ -36,4 +44,5 @@ RUN python manage.py collectstatic --noinput
 
 # Run with Gunicorn for production
 # CMD ["gunicorn", "--bind", "0.0.0.0:$PORT", "--workers", "2", "orders_sms_service.wsgi:application"]
-CMD ["/bin/sh", "-c", "python manage.py migrate --no-input && gunicorn orders_sms_service.wsgi:application --bind 0.0.0.0:$PORT"]
+# CMD ["/bin/sh", "-c", "python manage.py migrate --no-input && gunicorn orders_sms_service.wsgi:application --bind 0.0.0.0:$PORT --timeout 120"]
+
