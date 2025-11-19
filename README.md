@@ -1,3 +1,5 @@
+Deployed Service link: https://orders-sms-service.onrender.com
+
 # Django Order Management System
 
 <p>This project is a Django REST API for managing customers and orders, with secure user authentication via OIDC with Auth0 and SMS  service using Africa's Talking.<p>
@@ -76,25 +78,16 @@
 - Mocked SMS for reliability.  (see `htmlcov/index.html`).
 - Run: `pytest --cov=core --cov-report=html`.
 - **Triggers**: Set up GitHub Actions (`.github/workflows/ci-cd.yml`) to run `ci-tests` on PRs tp `main` and `dev` (tests, Ansible). Configured secrets for Auth0 and Africa's Talking.
-- Runs `ci-test` and `cd-deploy` on pushes to `main` (GAE deployment)
+- Runs `ci-test` and `cd-deploy` on pushes to `main` (Render deployment)
 - **Testing Instructions**:
   1. Push code to GitHub `dev` branch or `main` branch.
   2. Check GitHub Actions for test results and coverage.
 
 ## Container Runtime 
-- **Tool**: Colima (macOS Monterey 12.7.6, alternative to Docker Desktop)
+- **Tool**: Colima (suitable macOS Monterey 12.7.6, alternative to Docker Desktop which requires later MacOS versions)
 - **Setup**: `brew install colima docker`, then `colima start --cpu 2 --memory 4`.
 - **Usage**: Runs Docker-compatible containers for development and GAE deployment.
 - **Troubleshooting**: Resolved QEMU errors via `brew install qemu` or `colima delete`.
-
-## Setup Instructions
-1. Clone the repository and navigate to the project directory.
-1. Install dependencies from requirements.txt.
-1. Create a .env file with Auth0 and Africa's Talking credentials.
-1. Apply database migrations.
-1. Run the Django server locally.
-1. Configure Auth0: set callback and logout URLs in the Auth0 dashboard.
-1. Configure Africa's Talking: register a test phone number in the sandbox.
 
 ## Testing Instructions
 - (for customer and order creation and Africas talking sms)
